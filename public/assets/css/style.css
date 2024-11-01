@@ -1,0 +1,98 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.left-column {
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/assets/img/kiri.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.app-button {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.app-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.right-column img {
+    object-fit: cover;
+    filter: brightness(0.9);
+    transition: all 0.5s ease;
+    height: 100%;
+}
+
+.right-column img:hover {
+    filter: brightness(1);
+}
+
+.modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.list-group-item {
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+@media (max-width: 767px) {
+    .left-column {
+        min-height: auto;
+    }
+
+    .right-column {
+        display: none;
+    }
+
+    .app-button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .row {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .app-button {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .app-button {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+}
