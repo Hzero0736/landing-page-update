@@ -19,6 +19,9 @@
             eventTextColor: '#ffffff',
             slotMinTime: '08:00:00',
             slotMaxTime: '18:00:00',
+            height: 'auto',
+            contentHeight: 'auto',
+            aspectRatio: 1.8,
             eventClick: function(info) {
                 $('#detailModal').modal('show');
                 $('#detail_title').text(info.event.title);
@@ -57,21 +60,21 @@
     });
 </script>
 
-<div class="col-md-12">
+<div class="col-md-10 mx-auto">
     <div class="card shadow-lg rounded-3 border-0 hover-lift">
-        <div class="card-header bg-dark bg-gradient text-white py-3" style="background: linear-gradient(45deg, #4e73df, #224abe);">
+        <div class="card-header bg-dark bg-gradient text-white py-2" style="background: linear-gradient(45deg, #4e73df, #224abe);">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-calendar-alt fa-2x me-3 animate__animated animate__pulse animate__infinite"></i>
-                    <span class="fw-bold fs-4">Jadwal Rapat</span>
+                    <i class="fas fa-calendar-alt fa-lg me-2 animate__animated animate__pulse animate__infinite"></i>
+                    <span class="fw-bold fs-5">Jadwal Rapat</span>
                 </div>
                 <a href="<?= base_url('/') ?>" class="btn btn-light btn-sm rounded-pill hover-shadow-sm">
                     <i class="fas fa-arrow-left me-2"></i>Kembali
                 </a>
             </div>
         </div>
-        <div class="card-body p-4">
-            <div id="calendar" class="shadow-sm rounded-3 border border-light p-3 bg-white"></div>
+        <div class="card-body p-3">
+            <div id="calendar" class="shadow-sm rounded-3 border border-light p-2 bg-white"></div>
         </div>
     </div>
 </div>

@@ -21,6 +21,9 @@
             eventTextColor: '#ffffff',
             slotMinTime: '08:00:00',
             slotMaxTime: '18:00:00',
+            height: 'auto',
+            contentHeight: 'auto',
+            aspectRatio: 1.8,
             select: function(info) {
                 $('#bookingModal').modal('show');
                 $('#date').val(info.startStr.split('T')[0]);
@@ -115,48 +118,48 @@
 
 <body>
     <?php if (session()->has('success')): ?>
-        <div class="alert alert-success alert-dismissible fade show shadow-lg border-0 rounded-4 position-relative overflow-hidden" role="alert"
+        <div class="alert alert-success alert-dismissible fade show shadow-lg border-0 rounded-3 position-relative overflow-hidden" role="alert"
             style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
             <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOnJnYmEoMjU1LDI1NSwyNTUsMCkiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiLz48L3N2Zz4=')"></div>
             <div class="d-flex align-items-center text-white">
-                <i class="fas fa-check-circle fa-2x me-3 animate__animated animate__bounceIn"></i>
-                <span class="fw-bold fs-5"><?= session()->get('success') ?></span>
+                <i class="fas fa-check-circle fa-lg me-2 animate__animated animate__bounceIn"></i>
+                <span class="fw-bold"><?= session()->get('success') ?></span>
             </div>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
     <?php if (session()->has('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show shadow-lg border-0 rounded-4 position-relative overflow-hidden" role="alert"
+        <div class="alert alert-danger alert-dismissible fade show shadow-lg border-0 rounded-3 position-relative overflow-hidden" role="alert"
             style="background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);">
             <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjpyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOnJnYmEoMjU1LDI1NSwyNTUsMCkiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiLz48L3N2Zz4=')"></div>
             <div class="d-flex align-items-center text-white">
-                <i class="fas fa-exclamation-circle fa-2x me-3 animate__animated animate__headShake"></i>
-                <span class="fw-bold fs-5"><?= session()->get('error') ?></span>
+                <i class="fas fa-exclamation-circle fa-lg me-2 animate__animated animate__headShake"></i>
+                <span class="fw-bold"><?= session()->get('error') ?></span>
             </div>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
     <?php if (session()->has('errors')): ?>
-        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-start border-danger border-4" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-start border-danger border-3" role="alert">
             <i class="fas fa-exclamation-triangle me-2"></i>
-            <ul class="mb-0">
+            <ul class="mb-0 small">
                 <?php foreach (session()->get('errors') as $error): ?>
                     <li><?= esc($error) ?></li>
                 <?php endforeach; ?>
             </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
-    <div class="container mt-4">
-        <div class="row g-4">
+    <div class="container mt-3">
+        <div class="row g-3">
             <div class="col-md-3">
-                <div class="card shadow-lg rounded-3 mb-4 border-0">
-                    <div class="card-header bg-gradient text-white py-3 d-flex justify-content-between align-items-center" style="background-color: #4e73df;">
+                <div class="card shadow rounded-3 mb-3 border-0">
+                    <div class="card-header bg-gradient text-white py-2 d-flex justify-content-between align-items-center" style="background-color: #4e73df;">
                         <div>
-                            <i class="fas fa-door-open fa-lg me-2"></i>
+                            <i class="fas fa-door-open me-2"></i>
                             <span class="fw-bold">Daftar Ruangan</span>
                         </div>
                         <div>
@@ -165,35 +168,35 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body bg-light" style="height: 400px; overflow-y: auto;">
+                    <div class="card-body bg-light" style="height: 350px; overflow-y: auto;">
                         <?php if (isset($rooms) && is_array($rooms)): ?>
                             <?php foreach ($rooms as $room): ?>
-                                <div class="room-item mb-3 p-3 bg-white rounded-3 shadow-sm hover-lift transition-all" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $room['description'] ?>">
+                                <div class="room-item mb-2 p-2 bg-white rounded-3 shadow-sm hover-lift transition-all" data-bs-toggle="tooltip" data-bs-placement="top" title="<?= $room['description'] ?>">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
-                                            <div class="room-icon bg-primary bg-opacity-10 p-2 rounded-circle me-3">
-                                                <i class="fas fa-door-open text-primary"></i>
+                                            <div class="room-icon bg-primary bg-opacity-10 p-1 rounded-circle me-2">
+                                                <i class="fas fa-door-open text-primary small"></i>
                                             </div>
                                             <div>
-                                                <h6 class="mb-0 fw-bold"><?= $room['name'] ?></h6>
+                                                <h6 class="mb-0 small fw-bold"><?= $room['name'] ?></h6>
                                             </div>
                                         </div>
                                         <div class="btn-group">
-                                            <button class="btn btn-warning btn-sm rounded-pill me-1 shadow-sm"
+                                            <button class="btn btn-warning btn-sm rounded-pill me-1"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#editRoomModal"
                                                 data-id="<?= $room['id']; ?>"
                                                 data-name="<?= $room['name']; ?>"
                                                 data-description="<?= $room['description']; ?>"
                                                 title="Edit">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-edit small"></i>
                                             </button>
-                                            <button class="btn btn-danger btn-sm rounded-pill shadow-sm"
+                                            <button class="btn btn-danger btn-sm rounded-pill"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#deleteRoomModal"
                                                 data-id="<?= $room['id'] ?>"
                                                 title="Hapus">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fas fa-trash small"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -204,19 +207,19 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="card shadow-lg rounded-3 border-0">
-                    <div class="card-header bg-gradient text-white py-3 d-flex justify-content-between align-items-center" style="background-color: #4e73df;">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-header bg-gradient text-white py-2 d-flex justify-content-between align-items-center" style="background-color: #4e73df;">
                         <div>
-                            <i class="fas fa-calendar-alt fa-lg me-2"></i>
+                            <i class="fas fa-calendar-alt me-2"></i>
                             <span class="fw-bold">Kalender Booking</span>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-light btn-sm rounded-pill shadow-sm ms-2" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                                <i class="fas fa-calendar-plus me-2"></i>Buat Booking Baru
+                            <button type="button" class="btn btn-light btn-sm rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                <i class="fas fa-calendar-plus me-1"></i>Buat Booking
                             </button>
                         </div>
                     </div>
-                    <div class="card-body p-4">
+                    <div class="card-body p-3">
                         <div id="calendar" class="shadow-sm rounded-3"></div>
                     </div>
                 </div>
