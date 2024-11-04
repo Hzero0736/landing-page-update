@@ -19,11 +19,14 @@ class CreateMeetingsTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
+            'date' => [
+                'type' => 'DATE'
+            ],
             'start_time' => [
-                'type' => 'DATETIME'
+                'type' => 'TIME'
             ],
             'end_time' => [
-                'type' => 'DATETIME'
+                'type' => 'TIME'
             ],
             'room' => [
                 'type' => 'VARCHAR',
@@ -36,6 +39,10 @@ class CreateMeetingsTable extends Migration
             'user' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100
+            ],
+            'repeat' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
