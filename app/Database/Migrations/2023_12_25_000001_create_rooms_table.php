@@ -15,39 +15,22 @@ class CreateRoomsTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'room_name' => [
+            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100
             ],
-            'capacity' => [
-                'type' => 'INT',
-                'constraint' => 5
-            ],
-            'facilities' => [
+            'description' => [
                 'type' => 'TEXT',
-                'null' => true
-            ],
-            'status' => [
-                'type' => 'ENUM',
-                'constraint' => ['available', 'maintenance'],
-                'default' => 'available'
-            ],
-            'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
                 'null' => true
             ]
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('rooms');
+        $this->forge->createTable('meeting_rooms');
     }
 
     public function down()
     {
-        $this->forge->dropTable('rooms');
+        $this->forge->dropTable('meeting_rooms');
     }
 }
