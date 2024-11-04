@@ -28,9 +28,16 @@ class RoomController extends BaseController
 
     public function add()
     {
+        $name = $this->request->getPost('name');
+        $description = $this->request->getPost('description');
+
+        if ($this->meetingroomModel->where('name', $name)->first()) {
+            return redirect()->to('/booking')->with('error', 'Nama ruang rapat sudah ada');
+        }
+
         $data = [
-            'name' => $this->request->getPost('name'),
-            'description' => $this->request->getPost('description')
+            'name' => $name,
+            'description' => $description
         ];
 
         $this->meetingroomModel->insert($data);
@@ -45,9 +52,17 @@ class RoomController extends BaseController
 
     public function edit($id)
     {
+        $name = $this->request->getPost('name');
+        $description = $this->request->getPost('description');
+
+        $existingRoom = $this->meetingroomModel->where('name', $name)->first();
+        if ($existingRoom && $existingRoom['id'] != $id) {
+            return redirect()->to('/booking')->with('error', 'Nama ruang rapat sudah ada');
+        }
+
         $data = [
-            'name' => $this->request->getPost('name'),
-            'description' => $this->request->getPost('description')
+            'name' => $name,
+            'description' => $description
         ];
 
         $this->meetingroomModel->update($id, $data);
