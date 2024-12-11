@@ -1,7 +1,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var userRole = ''; // Set user role as necessary
+        var userRole = '';
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
@@ -16,16 +16,43 @@
             editable: userRole === 'secretary',
             selectable: userRole === 'secretary',
             events: <?= json_encode($meetings) ?>,
-            eventColor: '#3788d8',
-            eventBorderColor: '#2C3E50',
+            eventColor: '#2c3e50',
+            eventBorderColor: '#34495e',
             eventTextColor: '#ffffff',
             slotMinTime: '08:00:00',
             slotMaxTime: '18:00:00',
             height: 'auto',
             contentHeight: 'auto',
             aspectRatio: 1.8,
+            eventContent: function(arg) {
+                return {
+                    html: `
+                        <div class="fc-event-main-frame p-1">
+                            <div class="d-flex align-items-center gap-1 mb-1">
+                                <i class="fas fa-bookmark text-warning small"></i>
+                                <span class="fw-bold small">${arg.event.title}</span>
+                            </div>
+                            <div class="d-flex flex-column gap-1">
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="fas fa-clock text-light small"></i>
+                                    <span class="small">${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="fas fa-door-open text-success small"></i>
+                                    <span class="small">${arg.event.extendedProps.room}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <i class="fas fa-user text-info small"></i>
+                                    <span class="small">${arg.event.extendedProps.user}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            },
             select: function(info) {
                 $('#bookingModal').modal('show');
+                $('#room_id').val(info.room_id);
                 $('#date').val(info.startStr.split('T')[0]);
                 $('#start_time').val(info.startStr.split('T')[1].slice(0, 5));
                 $('#end_time').val(info.endStr.split('T')[1].slice(0, 5));
@@ -34,7 +61,6 @@
                 $('#detailModal').modal('show');
                 $('#detail_title').text(info.event.title);
 
-                // Format tanggal dan waktu
                 const startDateTime = new Date(info.event.start);
                 const endDateTime = new Date(info.event.end);
 
@@ -62,10 +88,8 @@
                 $('#detail_description').text(info.event.extendedProps.description || 'Tidak ada deskripsi');
                 $('#detail_user').text(info.event.extendedProps.user);
 
-                // Store event ID for delete operation
                 $('#detailModal').data('eventId', info.event.id);
 
-                // Populate edit modal with event data
                 $('#edit_id').val(info.event.id);
                 $('#edit_title').val(info.event.title);
                 $('#edit_date').val(info.event.startStr.split('T')[0]);
@@ -75,10 +99,6 @@
                 $('#edit_description').val(info.event.extendedProps.description || '');
                 $('#edit_user').val(info.event.extendedProps.user);
 
-                // Set value untuk room_id pada select
-                $('#edit_room').val(info.event.extendedProps.room_id);
-
-                // Tambahkan ini untuk memastikan room_id terisi
                 const roomId = info.event.extendedProps.room_id;
                 if (roomId) {
                     $(`#edit_room option[value='${roomId}']`).prop('selected', true);
@@ -88,15 +108,10 @@
 
         calendar.render();
 
-        // Script untuk handle simpan
         $('#saveEditBtn').on('click', function(e) {
             e.preventDefault();
             const eventId = $('#edit_id').val();
-
-            // Update action URL dengan ID
             $('#editBookingForm').attr('action', `/booking/edit/${eventId}`);
-
-            // Submit form
             $('#editBookingForm').submit();
         });
     });
@@ -104,7 +119,6 @@
     function deleteBooking() {
         const eventId = $('#detailModal').data('eventId');
         $('#detailModal').modal('hide');
-
         $('#confirmDeleteModal').modal('show');
         $('#confirmDeleteBtn').attr('href', `/booking/delete/${eventId}`);
     }
@@ -114,7 +128,6 @@
         window.location.href = `/booking/delete/${eventId}`;
     });
 </script>
-
 
 <body>
     <?php if (session()->has('success')): ?>

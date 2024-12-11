@@ -22,11 +22,30 @@
             height: 'auto',
             contentHeight: 'auto',
             aspectRatio: 1.8,
+            eventContent: function(arg) {
+                return {
+                    html: `
+                        <div class="fc-event-main-frame p-2">
+                            <div class="fc-event-title-container">
+                                <div class="fc-event-title font-weight-bold">
+                                    <i class="fas fa-bookmark me-1 text-warning"></i> ${arg.event.title}
+                                </div>
+                            </div>
+                            <div class="fc-event-description small mt-1">
+                                <i class="fas fa-clock me-1 text-light"></i> ${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB
+                                <br>
+                                <i class="fas fa-door-open me-1 text-success"></i> ${arg.event.extendedProps.room}
+                                <br>
+                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.user}
+                            </div>
+                        </div>
+                    `
+                }
+            },
             eventClick: function(info) {
                 $('#detailModal').modal('show');
                 $('#detail_title').text(info.event.title);
 
-                // Format tanggal dan waktu
                 const startDateTime = new Date(info.event.start);
                 const endDateTime = new Date(info.event.end);
 
@@ -60,113 +79,254 @@
     });
 </script>
 
-<div class="col-md-10 mx-auto">
-    <div class="card shadow-lg rounded-3 border-0 hover-lift">
-        <div class="card-header bg-dark bg-gradient text-white py-2" style="background: linear-gradient(45deg, #4e73df, #224abe);">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-calendar-alt fa-lg me-2 animate__animated animate__pulse animate__infinite"></i>
-                    <span class="fw-bold fs-5">Jadwal Rapat</span>
+<div class="dashboard-container py-2">
+    <div class="calendar-wrapper">
+        <div class="card shadow-sm rounded-3 border-0">
+            <!-- Header Card yang lebih compact -->
+            <div class="card-header py-2 px-3" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="rounded-circle bg-white bg-opacity-10 p-1" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calendar-alt text-white small"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-white mb-0 small">Jadwal Rapat</h6>
+                        </div>
+                    </div>
+                    <a href="<?= base_url('/') ?>" class="btn btn-light btn-sm rounded-pill py-1 px-2" style="font-size: 0.75rem;">
+                        <i class="fas fa-arrow-left me-1"></i>Kembali
+                    </a>
                 </div>
-                <a href="<?= base_url('/') ?>" class="btn btn-light btn-sm rounded-pill hover-shadow-sm">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali
-                </a>
             </div>
-        </div>
-        <div class="card-body p-3">
-            <div id="calendar" class="shadow-sm rounded-3 border border-light p-2 bg-white"></div>
+            <div class="card-body p-2">
+                <div id="calendar" class="shadow-sm rounded-3 bg-white"></div>
+            </div>
         </div>
     </div>
 </div>
 
+
 <!-- Modal Detail Meeting -->
-<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailModal" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-gradient text-white" style="background-color: #4e73df;">
-                <h5 class="modal-title" id="detailModalLabel">
-                    <i class="fas fa-calendar-check me-2"></i> Detail Meeting
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content border-0 shadow-sm rounded-3">
+            <!-- Header -->
+            <div class="modal-header py-2 px-3" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-calendar-check text-white"></i>
+                    <h6 class="modal-title text-white mb-0">Detail Meeting</h6>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-4">
-                <div class="card mb-3 border-0">
-                    <div class="card-body p-0">
-                        <h4 class="card-title mb-4 text-primary" id="detail_title"></h4>
 
-                        <div class="d-flex align-items-center mb-3 p-2 rounded hover-bg-light">
-                            <div class="icon-box rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                                <i class="fas fa-calendar-day text-primary"></i>
-                            </div>
-                            <span id="detail_date" class="fs-6"></span>
+            <!-- Body -->
+            <div class="modal-body p-3">
+                <h6 class="fw-bold text-primary mb-3" id="detail_title"></h6>
+
+                <div class="row g-3">
+                    <!-- Date & Time -->
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-calendar-day text-primary"></i>
+                            <span id="detail_date" class="small"></span>
                         </div>
-
-                        <div class="d-flex align-items-center mb-3 p-2 rounded hover-bg-light">
-                            <div class="icon-box rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                                <i class="fas fa-clock text-primary"></i>
-                            </div>
-                            <div>
-                                <span id="detail_start"></span>
-                                <span class="mx-2">-</span>
-                                <span id="detail_end"></span>
-                            </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-clock text-success"></i>
+                            <span class="small">
+                                <span id="detail_start"></span> - <span id="detail_end"></span>
+                            </span>
                         </div>
+                    </div>
 
-                        <div class="d-flex align-items-center mb-3 p-2 rounded hover-bg-light">
-                            <div class="icon-box rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                                <i class="fas fa-door-open text-primary"></i>
-                            </div>
-                            <span id="detail_room" class="fs-6"></span>
+                    <!-- Room & User -->
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-door-open text-warning"></i>
+                            <span id="detail_room" class="small"></span>
                         </div>
-
-                        <div class="d-flex align-items-center mb-4 p-2 rounded hover-bg-light">
-                            <div class="icon-box rounded-circle bg-primary bg-opacity-10 p-2 me-3">
-                                <i class="fas fa-user text-primary"></i>
-                            </div>
-                            <span id="detail_user" class="fs-6"></span>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-user text-info"></i>
+                            <span id="detail_user" class="small"></span>
                         </div>
+                    </div>
 
-                        <div class="mt-4 p-3 bg-light rounded-3">
-                            <h6 class="fw-bold mb-3">
-                                <i class="fas fa-file-alt text-primary me-2"></i> Deskripsi
-                            </h6>
-                            <p class="text-muted mb-0" id="detail_description"></p>
+                    <!-- Description -->
+                    <div class="col-12">
+                        <div class="bg-light rounded-2 p-2">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="fas fa-file-alt text-primary"></i>
+                                <small class="fw-bold">Deskripsi</small>
+                            </div>
+                            <p class="small text-muted mb-0" id="detail_description"></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer border-0 pt-0">
-                <button type="button" class="btn btn-light-primary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Tutup
-                </button>
+
+            <!-- Footer -->
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
 </div>
 
+
 <style>
-    .hover-bg-light:hover {
-        background-color: rgba(0, 0, 0, 0.03);
-        transition: all 0.3s ease;
+    :root {
+        --header-height: 60px;
+        --footer-height: 40px;
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #16a085;
     }
 
-    .btn-light-primary {
-        color: #4e73df;
-        background-color: #eef2ff;
-        border: none;
-    }
-
-    .btn-light-primary:hover {
-        background-color: #4e73df;
-        color: white;
-        transition: all 0.3s ease;
-    }
-
-    .icon-box {
-        width: 40px;
-        height: 40px;
+    /* Layout & Container */
+    .dashboard-container {
+        min-height: calc(100vh - var(--header-height) - var(--footer-height));
+        padding: 1rem;
         display: flex;
         align-items: center;
-        justify-content: center;
+    }
+
+    .calendar-wrapper {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Calendar Styles */
+    #calendar {
+        height: 100%;
+        padding: 0.8rem !important;
+    }
+
+    .fc {
+        height: 100% !important;
+    }
+
+    .fc-view-harness {
+        height: calc(100% - 50px) !important;
+    }
+
+    .fc-event {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+        border-left: 3px solid var(--accent-color) !important;
+        margin: 2px 0 !important;
+        padding: 3px !important;
+        border-radius: 4px !important;
+        transition: all 0.2s ease;
+    }
+
+    .fc-event:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .fc-header-toolbar {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        border-radius: 8px;
+    }
+
+    .fc-toolbar-title {
+        color: white !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* Icon Styles */
+    .header-icon-wrapper {
+        position: relative;
+        width: 35px;
+        height: 35px;
+    }
+
+    .icon-pulse {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        padding: 1rem;
+    }
+
+    .info-card {
+        padding: 0.8rem;
+        border-radius: 8px;
+        background: #f8f9fa;
+        margin-bottom: 0.8rem;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.3);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Responsive */
+    @media (max-height: 768px) {
+        .card {
+            height: calc(100vh - 1rem);
+        }
+
+        .card-header {
+            padding: 0.6rem 1rem !important;
+        }
+
+        .fc-header-toolbar {
+            padding: 8px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .fc-toolbar-title {
+            font-size: 1rem !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .dashboard-container {
+            padding: 0.5rem;
+        }
+
+        .calendar-wrapper {
+            max-width: 100%;
+        }
+
+        .fc-toolbar-chunk {
+            display: flex;
+            gap: 5px;
+        }
+
+        .fc-button {
+            padding: 4px 8px !important;
+            font-size: 0.8rem !important;
+        }
     }
 </style>
