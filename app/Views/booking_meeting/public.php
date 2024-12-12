@@ -19,15 +19,15 @@
             eventTextColor: '#ffffff',
             slotMinTime: '08:00:00',
             slotMaxTime: '18:00:00',
-            height: 'auto',
-            contentHeight: 'auto',
-            aspectRatio: 1.8,
+            height: '100vh',
+            contentHeight: 'calc(100vh - 150px)',
+            aspectRatio: 1.5,
             eventContent: function(arg) {
                 return {
                     html: `
                         <div class="fc-event-main-frame p-2">
                             <div class="fc-event-title-container">
-                                <div class="fc-event-title font-weight-bold">
+                                <div class="fc-event-title fw-bold">
                                     <i class="fas fa-bookmark me-1 text-warning"></i> ${arg.event.title}
                                 </div>
                             </div>
@@ -79,130 +79,138 @@
     });
 </script>
 
-<div class="dashboard-container py-2">
+<div class="dashboard-container">
     <div class="calendar-wrapper">
-        <div class="card shadow-sm rounded-3 border-0">
-            <!-- Header Card yang lebih compact -->
-            <div class="card-header py-2 px-3" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+        <div class="card shadow border-0">
+            <div class="card-header py-3" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="rounded-circle bg-white bg-opacity-10 p-1" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-calendar-alt text-white small"></i>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-white bg-opacity-10 p-2">
+                            <i class="fas fa-calendar-alt text-white"></i>
                         </div>
-                        <div>
-                            <h6 class="text-white mb-0 small">Jadwal Rapat</h6>
-                        </div>
+                        <h5 class="text-white mb-0">Jadwal Rapat</h5>
                     </div>
-                    <a href="<?= base_url('/') ?>" class="btn btn-light btn-sm rounded-pill py-1 px-2" style="font-size: 0.75rem;">
-                        <i class="fas fa-arrow-left me-1"></i>Kembali
+                    <a href="<?= base_url('/') ?>" class="btn btn-light rounded-pill">
+                        <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                 </div>
             </div>
-            <div class="card-body p-2">
-                <div id="calendar" class="shadow-sm rounded-3 bg-white"></div>
+            <div class="card-body p-3">
+                <div id="calendar" class="shadow-sm rounded bg-white"></div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Modal Detail Meeting -->
 <div class="modal fade" id="detailModal" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-sm rounded-3">
-            <!-- Header -->
-            <div class="modal-header py-2 px-3" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header py-3" style="background: linear-gradient(135deg, #1a237e 0%, #283593 100%);">
                 <div class="d-flex align-items-center gap-2">
-                    <i class="fas fa-calendar-check text-white"></i>
-                    <h6 class="modal-title text-white mb-0">Detail Meeting</h6>
+                    <i class="fas fa-calendar-check text-white fa-lg"></i>
+                    <h5 class="modal-title text-white mb-0">Detail Meeting</h5>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <!-- Body -->
-            <div class="modal-body p-3">
-                <h6 class="fw-bold text-primary mb-3" id="detail_title"></h6>
+            <div class="modal-body p-4">
+                <h5 class="fw-bold text-primary mb-4" id="detail_title"></h5>
 
-                <div class="row g-3">
-                    <!-- Date & Time -->
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-calendar-day text-primary"></i>
-                            <span id="detail_date" class="small"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-clock text-success"></i>
-                            <span class="small">
-                                <span id="detail_start"></span> - <span id="detail_end"></span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Room & User -->
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-door-open text-warning"></i>
-                            <span id="detail_room" class="small"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fas fa-user text-info"></i>
-                            <span id="detail_user" class="small"></span>
-                        </div>
-                    </div>
-
-                    <!-- Description -->
+                <div class="row g-4">
                     <div class="col-12">
-                        <div class="bg-light rounded-2 p-2">
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <i class="fas fa-file-alt text-primary"></i>
-                                <small class="fw-bold">Deskripsi</small>
+                        <div class="info-card bg-light">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-calendar-day text-primary fa-lg"></i>
+                                <span id="detail_date" class="fw-medium"></span>
                             </div>
-                            <p class="small text-muted mb-0" id="detail_description"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="info-card bg-light">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-clock text-success fa-lg"></i>
+                                <span class="fw-medium">
+                                    <span id="detail_start"></span> - <span id="detail_end"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="info-card bg-light">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-door-open text-warning fa-lg"></i>
+                                <span id="detail_room" class="fw-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="info-card bg-light">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-user text-info fa-lg"></i>
+                                <span id="detail_user" class="fw-medium"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="info-card bg-light">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="fas fa-file-alt text-primary fa-lg"></i>
+                                <h6 class="fw-bold mb-0">Deskripsi</h6>
+                            </div>
+                            <p class="text-muted mb-0" id="detail_description"></p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <style>
     :root {
         --header-height: 60px;
         --footer-height: 40px;
-        --primary-color: #2c3e50;
-        --secondary-color: #34495e;
-        --accent-color: #16a085;
+        --primary-color: #1a237e;
+        --secondary-color: #283593;
+        --accent-color: #3949ab;
     }
 
-    /* Layout & Container */
     .dashboard-container {
-        min-height: calc(100vh - var(--header-height) - var(--footer-height));
+        height: 100vh;
         padding: 1rem;
-        display: flex;
-        align-items: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
     }
 
     .calendar-wrapper {
         width: 100%;
-        max-width: 900px;
+        height: calc(100vh - 2rem);
         margin: 0 auto;
     }
 
-    /* Calendar Styles */
-    #calendar {
+    .card {
         height: 100%;
-        padding: 0.8rem !important;
+    }
+
+    .card-body {
+        height: calc(100% - 70px);
+        overflow: hidden;
+    }
+
+    #calendar {
+        height: 100% !important;
+        padding: 1rem !important;
+        background-color: white;
+        border-radius: 8px;
     }
 
     .fc {
@@ -215,98 +223,70 @@
 
     .fc-event {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
-        border-left: 3px solid var(--accent-color) !important;
-        margin: 2px 0 !important;
-        padding: 3px !important;
-        border-radius: 4px !important;
-        transition: all 0.2s ease;
+        border-left: 4px solid var(--accent-color) !important;
+        margin: 3px 0 !important;
+        padding: 4px !important;
+        border-radius: 6px !important;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .fc-event:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .fc-header-toolbar {
-        padding: 12px !important;
-        margin-bottom: 15px !important;
+        padding: 0.5rem !important;
+        margin-bottom: 1rem !important;
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        border-radius: 8px;
+        border-radius: 10px;
     }
 
     .fc-toolbar-title {
         color: white !important;
-        font-size: 1.1rem !important;
+        font-size: 1.25rem !important;
+        font-weight: bold !important;
     }
 
-    /* Icon Styles */
-    .header-icon-wrapper {
-        position: relative;
-        width: 35px;
-        height: 35px;
+    .fc-button {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: none !important;
+        padding: 8px 16px !important;
+        transition: all 0.3s ease !important;
     }
 
-    .icon-pulse {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-
-    /* Modal Styles */
-    .modal-content {
-        border-radius: 12px;
-    }
-
-    .modal-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        padding: 1rem;
+    .fc-button:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        transform: translateY(-1px);
     }
 
     .info-card {
-        padding: 0.8rem;
+        background-color: #f8f9fa;
         border-radius: 8px;
-        background: #f8f9fa;
-        margin-bottom: 0.8rem;
+        padding: 1rem;
+        transition: all 0.3s ease;
     }
 
-    /* Animations */
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        50% {
-            transform: scale(1.3);
-            opacity: 0;
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
+    .info-card:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
     }
 
-    /* Responsive */
-    @media (max-height: 768px) {
-        .card {
-            height: calc(100vh - 1rem);
-        }
-
-        .card-header {
-            padding: 0.6rem 1rem !important;
-        }
-
+    @media (max-width: 768px) {
         .fc-header-toolbar {
-            padding: 8px !important;
-            margin-bottom: 8px !important;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .fc-toolbar-title {
-            font-size: 1rem !important;
+        .fc-toolbar-chunk {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .modal-dialog {
+            margin: 0.5rem;
         }
     }
 
@@ -315,18 +295,13 @@
             padding: 0.5rem;
         }
 
-        .calendar-wrapper {
-            max-width: 100%;
-        }
-
-        .fc-toolbar-chunk {
-            display: flex;
-            gap: 5px;
-        }
-
         .fc-button {
-            padding: 4px 8px !important;
-            font-size: 0.8rem !important;
+            padding: 6px 12px !important;
+            font-size: 0.875rem !important;
+        }
+
+        .info-card {
+            padding: 0.75rem;
         }
     }
 </style>
