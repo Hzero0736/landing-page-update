@@ -11,8 +11,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label><i class="fas fa-user"></i> Nama User</label>
-                                        <input type="text" class="form-control" name="user" required placeholder="Masukkan nama user">
+                                        <label><i class="fas fa-user"></i> Nama Penyelenggara</label>
+                                        <input type="text" class="form-control" name="nama_penyelenggara" required placeholder="Masukkan nama penyelenggara">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label><i class="fas fa-heading"></i> Judul Meeting</label>
@@ -86,8 +86,8 @@
                                         <input type="text" class="form-control" id="edit_title" name="title" required placeholder="Masukkan judul meeting">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="edit_user" class="form-label"><i class="fas fa-user"></i> Nama User</label>
-                                        <input type="text" class="form-control" id="edit_user" name="user" required placeholder="Masukkan nama user">
+                                        <label for="edit_nama_penyelenggara" class="form-label"><i class="fas fa-user"></i> Nama Penyelenggara</label>
+                                        <input type="text" class="form-control" id="edit_nama_penyelenggara" name="nama_penyelenggara" required placeholder="Masukkan nama penyelenggara">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="edit_room" class="form-label"><i class="fas fa-door-open"></i> Ruangan</label>
@@ -167,7 +167,7 @@
 
                                 <div class="d-flex align-items-center mb-3">
                                     <i class="fas fa-user text-primary me-2"></i>
-                                    <span id="detail_user"></span>
+                                    <span id="detail_penyelenggara"></span>
                                 </div>
 
                                 <div class="mt-4">

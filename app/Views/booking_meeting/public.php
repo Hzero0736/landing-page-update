@@ -36,7 +36,7 @@
                                 <br>
                                 <i class="fas fa-door-open me-1 text-success"></i> ${arg.event.extendedProps.room}
                                 <br>
-                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.user}
+                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.nama_penyelenggara}
                             </div>
                         </div>
                     `
@@ -71,7 +71,7 @@
                 $('#detail_end').text(formattedEndTime + ' WIB');
                 $('#detail_room').text(info.event.extendedProps.room);
                 $('#detail_description').text(info.event.extendedProps.description || 'Tidak ada deskripsi');
-                $('#detail_user').text(info.event.extendedProps.user);
+                $('#detail_penyelenggara').text(info.event.extendedProps.nama_penyelenggara);
             }
         });
 
@@ -151,7 +151,7 @@
                         <div class="info-card bg-light">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="fas fa-user text-info fa-lg"></i>
-                                <span id="detail_user" class="fw-medium"></span>
+                                <span id="detail_penyelenggara" class="fw-medium"></span>
                             </div>
                         </div>
                     </div>

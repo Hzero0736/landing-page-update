@@ -34,7 +34,7 @@ class Home extends BaseController
                 'description' => $meeting['description'],
                 'room' => $meeting['room_name'],
                 'room_id' => $meeting['room_id'],
-                'user' => $meeting['user'],
+                'nama_penyelenggara' => $meeting['nama_penyelenggara'] ?? '',
                 'repeat' => $meeting['repeat']
             ];
         }, $meetings);
@@ -44,7 +44,6 @@ class Home extends BaseController
         ];
         echo view('layout/header');
         echo view('booking_meeting/public', $data);
-        // echo view('booking_meeting/form', $data);
         echo view('layout/footer');
     }
 }

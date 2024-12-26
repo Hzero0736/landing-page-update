@@ -1,0 +1,32 @@
+{
+    "content-hash": "d1f3e6c8e4b1e7c3e4b1e7c3e4b1e7c3",
+    "packages": [
+        {
+            "name": "php",
+            "version": "8.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php/php-src.git",
+                "reference": "8.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/php/php-src/archive/refs/tags/8.0.0.zip",
+                "reference": "8.0.0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*"
+            },
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/"
+                }
+            }
+        }
+    ],
+    "packages-dev": [],
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateMeetingsTable extends Migration
+class CreateUsersTable extends Migration
 {
     public function up()
     {
@@ -15,34 +15,21 @@ class CreateMeetingsTable extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'title' => [
+            'nik' => [
+                'type' => 'VARCHAR',
+                'constraint' => 20
+            ],
+            'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'date' => [
-                'type' => 'DATE'
-            ],
-            'start_time' => [
-                'type' => 'TIME'
-            ],
-            'end_time' => [
-                'type' => 'TIME'
-            ],
-            'room_id' => [
+            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100
             ],
-            'description' => [
-                'type' => 'TEXT',
-                'null' => true
-            ],
-            'nama_penyelenggara' => [
+            'role' => [
                 'type' => 'VARCHAR',
-                'constraint' => 100
-            ],
-            'repeat' => [
-                'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 50
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -53,13 +40,12 @@ class CreateMeetingsTable extends Migration
                 'null' => true
             ]
         ]);
-
         $this->forge->addKey('id', true);
-        $this->forge->createTable('meetings');
+        $this->forge->createTable('users');
     }
 
     public function down()
     {
-        $this->forge->dropTable('meetings');
+        $this->forge->dropTable('users');
     }
 }

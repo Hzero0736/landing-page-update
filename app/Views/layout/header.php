@@ -13,4 +13,5 @@
     <script src="assets/js/fullcalendar.min.js"></script>
     <script src="assets/js/index.global.min.js"></script>
     <script src="assets/js/moment.min.js"></script>
+
 </head>
