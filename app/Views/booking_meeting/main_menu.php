@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <!-- Brand Logo -->
         <a class="navbar-brand d-flex align-items-center" href="/booking">
-            <img src="../assets/img/logo.png" alt="Logo" height="45" class="rounded">
+            <img src="../assets/img/logo.png" alt="Logo" height="45">
         </a>
 
         <!-- Mobile Toggle -->
@@ -89,7 +89,16 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <div class="d-flex align-items-center">
                 <i class="fas fa-exclamation-circle me-2"></i>
-                <span><?= session()->get('error') ?></span>
+                <span>
+                    <?php
+                    $error = session()->get('error');
+                    if (is_array($error)) {
+                        echo implode('<br>', $error);
+                    } else {
+                        echo $error;
+                    }
+                    ?>
+                </span>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
@@ -237,27 +246,21 @@
             eventContent: function(arg) {
                 return {
                     html: `
-                <div class="fc-event-main-frame p-1">
-                    <div class="d-flex align-items-center gap-1 mb-1">
-                        <i class="fas fa-bookmark text-warning small"></i>
-                        <span class="fw-bold small">${arg.event.title}</span>
-                    </div>
-                    <div class="d-flex flex-column gap-1">
-                        <div class="d-flex align-items-center gap-1">
-                            <i class="fas fa-clock text-light small"></i>
-                            <span class="small">${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB</span>
+                        <div class="fc-event-main-frame p-2">
+                            <div class="fc-event-title-container">
+                                <div class="fc-event-title fw-bold">
+                                    <i class="fas fa-bookmark me-1 text-warning"></i> ${arg.event.title}
+                                </div>
+                            </div>
+                            <div class="fc-event-description small mt-1">
+                                <i class="fas fa-clock me-1 text-light"></i> ${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB
+                                <br>
+                                <i class="fas fa-door-open me-1 text-success"></i> ${arg.event.extendedProps.room}
+                                <br>
+                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.nama_penyelenggara}
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center gap-1">
-                            <i class="fas fa-door-open text-success small"></i>
-                            <span class="small">${arg.event.extendedProps.room}</span>
-                        </div>
-                        <div class="d-flex align-items-center gap-1">
-                            <i class="fas fa-user text-info small"></i>
-                            <span class="small">${arg.event.extendedProps.nama_penyelenggara}</span>
-                        </div>
-                    </div>
-                </div>
-                `
+                    `
                 }
             },
             select: function(info) {

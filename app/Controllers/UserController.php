@@ -24,6 +24,10 @@ class UserController extends BaseController
             'role'     => 'required'
         ]);
 
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->to('booking')->with('error', $validation->getErrors());
+        }
+
         $data = [
             'nik'      => $this->request->getPost('nik'),
             'password' => $this->request->getPost('password'),
@@ -33,14 +37,14 @@ class UserController extends BaseController
 
         if ($this->userModel->insert($data)) {
             return redirect()->to('booking')->with('success', 'User berhasil ditambahkan');
-        } else {
-            return redirect()->to('booking')->with('error', 'Gagal menambahkan user');
         }
+
+        return redirect()->to('booking')->with('error', 'Gagal menambahkan user');
     }
+
 
     public function delete($id)
     {
-        // Cek apakah ID yang akan dihapus sama dengan ID user yang sedang login
         if ($id == session()->get('id')) {
             return redirect()->to('booking')->with('error', 'Tidak dapat menghapus akun yang sedang digunakan');
         }
@@ -59,13 +63,22 @@ class UserController extends BaseController
             'name'     => 'required|min_length[3]',
             'role'     => 'required'
         ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->to('booking')->with('error', $validation->getErrors());
+        }
+
         $data = [
             'nik'      => $this->request->getPost('nik'),
             'password' => $this->request->getPost('password'),
             'name'     => $this->request->getPost('name'),
             'role'     => $this->request->getPost('role'),
         ];
-        $this->userModel->update($id, $data);
-        return redirect()->to('booking')->with('success', 'User berhasil diubah');
+
+        if ($this->userModel->update($id, $data)) {
+            return redirect()->to('booking')->with('success', 'User berhasil diubah');
+        }
+
+        return redirect()->to('booking')->with('error', 'Gagal mengubah user');
     }
 }
