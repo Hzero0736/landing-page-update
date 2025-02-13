@@ -13,7 +13,7 @@
             businessHours: true,
             editable: false,
             selectable: false,
-            events: <?= json_encode($meetings) ?>,
+            events: <?= json_encode(array_filter($meetings, fn($m) => $m['status'] === 'approved')) ?>,
             eventColor: '#3788d8',
             eventBorderColor: '#2C3E50',
             eventTextColor: '#ffffff',

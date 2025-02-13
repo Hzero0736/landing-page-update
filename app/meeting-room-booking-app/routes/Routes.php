@@ -28,6 +28,9 @@ $routes->group('', ['filter' => 'isAdminOrPetugas'], static function ($routes) {
     $routes->post('/meetings/add', 'MeetingController::save');
     $routes->post('/meetings/edit/(:any)', 'MeetingController::edit/$1');
     $routes->delete('/meetings/delete/(:any)', 'MeetingController::delete/$1');
+    $routes->get('/approval', 'MeetingController::listApproval');
+    $routes->get('booking/approve/(:num)', 'MeetingController::approve/$1');
+    $routes->post('booking/reject/(:num)', 'MeetingController::reject/$1');
 });
 
 // Routes for authentication

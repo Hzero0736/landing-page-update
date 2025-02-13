@@ -19,6 +19,21 @@
                         <i class="fas fa-home me-2"></i>Home
                     </a>
                 </li>
+                <?php if (session()->get('role') === 'superadmin'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center gap-2" href="/approval">
+                            <i class="fas fa-list-check"></i>
+                            <span>Daftar Persetujuan</span>
+                            <?php
+                            $pending_count = array_filter($meetings, function ($meeting) {
+                                return $meeting['status'] === 'pending';
+                            });
+                            if (!empty($pending_count)): ?>
+                                <span class="badge bg-danger rounded-pill"><?= count($pending_count) ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
 
             <div class="dropdown">
@@ -219,7 +234,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
-        var userRole = '';
+        var userRole = '<?= session()->get('role') ?>';
+        var userId = '<?= session()->get('id') ?>';
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
@@ -233,7 +249,14 @@
             businessHours: true,
             editable: userRole === 'secretary',
             selectable: userRole === 'secretary',
-            events: <?= json_encode($meetings) ?>,
+            events: <?= json_encode($meetings) ?>.filter(function(event) {
+                // Tampilkan semua event untuk admin/petugas
+                if (userRole === 'admin' || userRole === 'petugas') {
+                    return true;
+                }
+                // Untuk user biasa, hanya tampilkan event miliknya
+                return event.user_id === userId;
+            }),
             eventColor: '#2c3e50',
             eventBorderColor: '#34495e',
             eventTextColor: '#ffffff',
@@ -244,23 +267,46 @@
             aspectRatio: window.innerWidth < 768 ? 1.2 : 1.8,
             handleWindowResize: true,
             eventContent: function(arg) {
+                let statusBadge = '';
+                let statusClass = '';
+
+                switch (arg.event.extendedProps.status) {
+                    case 'pending':
+                        statusBadge = '<span class="badge bg-warning">Menunggu</span>';
+                        statusClass = 'border-warning';
+                        break;
+                    case 'approved':
+                        statusBadge = '<span class="badge bg-success">Disetujui</span>';
+                        statusClass = 'border-success';
+                        break;
+                    case 'rejected':
+                        statusBadge = '<span class="badge bg-danger">Ditolak</span>';
+                        statusClass = 'border-danger';
+                        break;
+                }
+
                 return {
                     html: `
-                        <div class="fc-event-main-frame p-2">
-                            <div class="fc-event-title-container">
-                                <div class="fc-event-title fw-bold">
-                                    <i class="fas fa-bookmark me-1 text-warning"></i> ${arg.event.title}
-                                </div>
+                    <div class="fc-event-main-frame p-2 ${statusClass}">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-bold text-truncate">${arg.event.title}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="small">
+                            <div class="d-flex align-items-center gap-1">
+                                <i class="fas fa-clock text-secondary"></i>
+                                <span>${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB</span>
                             </div>
-                            <div class="fc-event-description small mt-1">
-                                <i class="fas fa-clock me-1 text-light"></i> ${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB
-                                <br>
-                                <i class="fas fa-door-open me-1 text-success"></i> ${arg.event.extendedProps.room}
-                                <br>
-                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.nama_penyelenggara}
+                            <div class="d-flex align-items-center gap-1">
+                                <i class="fas fa-door-open text-primary"></i>
+                                <span>${arg.event.extendedProps.room}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-1">
+                                <i class="fas fa-user text-info"></i>
+                                <span>${arg.event.extendedProps.nama_penyelenggara}</span>
                             </div>
                         </div>
-                    `
+                    </div>`
                 }
             },
             select: function(info) {
@@ -272,6 +318,22 @@
             },
             eventClick: function(info) {
                 $('#detailModal').modal('show');
+                // Sembunyikan tombol edit & hapus jika status approved/rejected
+                if (info.event.extendedProps.status === 'approved' || info.event.extendedProps.status === 'rejected') {
+                    $('.modal-footer .btn-warning').hide();
+                    $('.modal-footer .btn-danger').hide();
+                } else {
+                    $('.modal-footer .btn-warning').show();
+                    $('.modal-footer .btn-danger').show();
+                }
+                if (info.event.extendedProps.status === 'rejected') {
+                    $('#rejection_section').show();
+                    $('#detail_reason').text(info.event.extendedProps.reason || 'Tidak ada alasan yang dicantumkan');
+                } else {
+                    $('#rejection_section').hide();
+                }
+
+                // Set data modal detail
                 $('#detail_title').text(info.event.title);
 
                 const startDateTime = new Date(info.event.start);
@@ -314,6 +376,11 @@
         });
 
         calendar.render();
+
+        function showRejectModal(id) {
+            $('#rejectForm').attr('action', `/booking/reject/${id}`);
+            $('#rejectModal').modal('show');
+        }
 
         window.addEventListener('resize', function() {
             calendar.setOption('aspectRatio', window.innerWidth < 768 ? 1.2 : 1.8);

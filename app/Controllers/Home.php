@@ -35,7 +35,8 @@ class Home extends BaseController
                 'room' => $meeting['room_name'],
                 'room_id' => $meeting['room_id'],
                 'nama_penyelenggara' => $meeting['nama_penyelenggara'] ?? '',
-                'repeat' => $meeting['repeat']
+                'repeat' => $meeting['repeat'],
+                'status' => $meeting['status'],
             ];
         }, $meetings);
         $data = [

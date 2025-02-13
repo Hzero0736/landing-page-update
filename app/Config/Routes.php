@@ -12,6 +12,11 @@ $routes->get('/booking', 'MeetingController::index', ['filter' => 'auth']);
 $routes->post('/booking/save', 'MeetingController::save');
 $routes->get('/booking/delete/(:num)', 'MeetingController::delete/$1');
 $routes->post('/booking/edit/(:num)', 'MeetingController::edit/$1');
+$routes->get('/approval', 'MeetingController::listApproval');
+$routes->get('booking/approve/(:num)', 'MeetingController::approve/$1');
+$routes->post('booking/reject/(:num)', 'MeetingController::reject/$1');
+
+
 
 $routes->get('/meeting', 'Home::public');
 $routes->get('/room', 'RoomController::index');

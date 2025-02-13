@@ -166,6 +166,14 @@
                                             </h6>
                                             <p class="text-muted" id="detail_penyelenggara"></p>
                                         </div>
+                                        <div class="rejection-section mt-4" id="rejection_section" style="display: none;">
+                                            <div class="alert alert-danger">
+                                                <h6 class="text-danger mb-2 fw-bold">
+                                                    <i class="fas fa-exclamation-circle me-2"></i> Alasan Penolakan
+                                                </h6>
+                                                <p class="mb-0" id="detail_reason"></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +192,9 @@
                                                 <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle p-2 me-3">
                                                     <i class="fas fa-clock text-primary"></i>
                                                 </div>
-                                                <span class="fw-medium"><span id="detail_start"></span> - <span id="detail_end"></span></span>
+                                                <span class="fw-medium">
+                                                    <span id="detail_start"></span> - <span id="detail_end"></span>
+                                                </span>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <div class="icon-wrapper bg-primary bg-opacity-10 rounded-circle p-2 me-3">
@@ -214,6 +224,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Modal Konfirmasi Delete -->
         <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">

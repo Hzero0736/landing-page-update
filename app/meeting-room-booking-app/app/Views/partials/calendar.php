@@ -62,7 +62,8 @@
                             </div>
                         </div>
                     </div>
-                `;
+                `
+                }
             },
             select: function(info) {
                 $('#bookingModal').modal('show');
@@ -76,8 +77,17 @@
                 $('#detail_title').text(info.event.title);
                 const startDateTime = new Date(info.event.start);
                 const endDateTime = new Date(info.event.end);
-                const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                const dateOptions = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+                const timeOptions = {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                };
                 $('#detail_date').text(startDateTime.toLocaleDateString('id-ID', dateOptions));
                 $('#detail_start').text(startDateTime.toLocaleTimeString('id-ID', timeOptions) + ' WIB');
                 $('#detail_end').text(endDateTime.toLocaleTimeString('id-ID', timeOptions) + ' WIB');

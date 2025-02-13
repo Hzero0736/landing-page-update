@@ -8,7 +8,20 @@ class MeetingModel extends Model
 {
     protected $table = 'meetings';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['title', 'date', 'start_time', 'end_time', 'room_id', 'description', 'user', 'repeat'];
+    protected $allowedFields    = [
+        'id',
+        'title',
+        'date',
+        'start_time',
+        'end_time',
+        'room_id',
+        'description',
+        'nama_penyelenggara',
+        'status',
+        'reason',
+        'repeat',
+        'user_id',
+    ];
 
     public function getMeetings()
     {

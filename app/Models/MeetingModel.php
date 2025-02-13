@@ -12,7 +12,20 @@ class MeetingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'title', 'date', 'start_time', 'end_time', 'room_id', 'description', 'nama_penyelenggara', 'repeat'];
+    protected $allowedFields    = [
+        'id',
+        'title',
+        'date',
+        'start_time',
+        'end_time',
+        'room_id',
+        'description',
+        'nama_penyelenggara',
+        'status',
+        'reason',
+        'repeat',
+        'user_id',
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -52,5 +65,12 @@ class MeetingModel extends Model
 
         $query = $builder->get();
         return $query->getResultArray();
+    }
+
+    public function getAllMeetingsWithRooms()
+    {
+        return $this->select('meetings.*, meeting_rooms.name as room_name')
+            ->join('meeting_rooms', 'meetings.room_id = meeting_rooms.id')
+            ->findAll();
     }
 }

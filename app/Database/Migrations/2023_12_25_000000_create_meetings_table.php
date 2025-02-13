@@ -40,9 +40,22 @@ class CreateMeetingsTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 100
             ],
+            'status' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100
+            ],
+            'reason' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
             'repeat' => [
                 'type' => 'VARCHAR',
                 'constraint' => 100,
+            ],
+            'user_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'null' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
