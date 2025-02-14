@@ -39,6 +39,8 @@ class Home extends BaseController
                 'status' => $meeting['status'],
             ];
         }, $meetings);
+
+
         $data = [
             'rooms' => $this->meetingModel->getMeetings(),
             'meetings' => $calendarEvents,

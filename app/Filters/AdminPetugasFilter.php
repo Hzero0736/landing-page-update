@@ -16,7 +16,7 @@ class AdminPetugasFilter implements FilterInterface
         }
 
         $role = $session->get('role');
-        if ($role != 'admin' && $role != 'petugas') {
+        if ($role != 'superadmin' && $role != 'admin') {
             return redirect()->to('/booking');
         }
     }

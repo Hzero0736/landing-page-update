@@ -1,44 +1,47 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+        var meetings = <?= json_encode($meetings) ?>;
+
         var calendar = new FullCalendar.Calendar(calendarEl, {
             themeSystem: 'bootstrap5',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            initialDate: new Date(),
+            initialView: 'dayGridMonth',
             navLinks: true,
             businessHours: true,
             editable: false,
             selectable: false,
-            events: <?= json_encode(array_filter($meetings, fn($m) => $m['status'] === 'approved')) ?>,
-            eventColor: '#3788d8',
-            eventBorderColor: '#2C3E50',
-            eventTextColor: '#ffffff',
-            slotMinTime: '08:00:00',
-            slotMaxTime: '18:00:00',
-            height: '100vh',
-            contentHeight: 'calc(100vh - 150px)',
-            aspectRatio: 1.5,
+            events: meetings.filter(meeting => meeting.status === 'approved').map(meeting => ({
+                id: meeting.id,
+                title: meeting.title,
+                start: meeting.start,
+                end: meeting.end,
+                extendedProps: {
+                    room: meeting.room,
+                    description: meeting.description,
+                    nama_penyelenggara: meeting.nama_penyelenggara
+                }
+            })),
+            eventColor: '#1a237e',
+            slotMinTime: '07:00:00',
+            slotMaxTime: '17:00:00',
             eventContent: function(arg) {
                 return {
                     html: `
-                        <div class="fc-event-main-frame p-2">
-                            <div class="fc-event-title-container">
-                                <div class="fc-event-title fw-bold">
-                                    <i class="fas fa-bookmark me-1 text-warning"></i> ${arg.event.title}
-                                </div>
-                            </div>
-                            <div class="fc-event-description small mt-1">
-                                <i class="fas fa-clock me-1 text-light"></i> ${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB
-                                <br>
-                                <i class="fas fa-door-open me-1 text-success"></i> ${arg.event.extendedProps.room}
-                                <br>
-                                <i class="fas fa-user me-1 text-info"></i> ${arg.event.extendedProps.nama_penyelenggara}
-                            </div>
+                    <div class="event-content p-2">
+                        <div class="event-title fw-bold mb-1">
+                            ${arg.event.title}
                         </div>
+                        <div class="event-details small">
+                            <div><i class="fas fa-clock me-1"></i>${new Date(arg.event.start).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB</div>
+                            <div><i class="fas fa-door-open me-1"></i>${arg.event.extendedProps.room}</div>
+                            <div><i class="fas fa-user me-1"></i>${arg.event.extendedProps.nama_penyelenggara}</div>
+                        </div>
+                    </div>
                     `
                 }
             },

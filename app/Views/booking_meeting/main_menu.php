@@ -251,7 +251,7 @@
             selectable: userRole === 'secretary',
             events: <?= json_encode($meetings) ?>.filter(function(event) {
                 // Tampilkan semua event untuk admin/petugas
-                if (userRole === 'admin' || userRole === 'petugas') {
+                if (userRole === 'superadmin' || userRole === 'amin') {
                     return true;
                 }
                 // Untuk user biasa, hanya tampilkan event miliknya

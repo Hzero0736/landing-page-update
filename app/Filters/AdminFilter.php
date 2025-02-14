@@ -16,7 +16,7 @@ class AdminFilter implements FilterInterface
         }
 
         $role = $session->get('role');
-        if ($role != 'admin') {
+        if ($role != 'superadmin') {
             return redirect()->to('/');
         }
     }
