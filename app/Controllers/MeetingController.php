@@ -66,7 +66,9 @@ class MeetingController extends BaseController
                 'reason' => $meeting['reason'] ?? '',
                 'backgroundColor' => $eventColor,
                 'borderColor' => $eventColor,
-                'user_id' => $meeting['user_id']
+                'user_id' => $meeting['user_id'],
+                'user_name' => $meeting['user_name'],
+                'nik' => $meeting['nik']
             ];
         }, $filteredMeetings);
 

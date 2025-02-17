@@ -60,8 +60,9 @@ class MeetingModel extends Model
     public function getMeetings()
     {
         $builder = $this->db->table('meetings');
-        $builder->select('meetings.*, meeting_rooms.name as room_name');
+        $builder->select('meetings.*, meeting_rooms.name as room_name, users.name as user_name, users.nik');
         $builder->join('meeting_rooms', 'meetings.room_id = meeting_rooms.id');
+        $builder->join('users', 'meetings.user_id = users.id');
 
         $query = $builder->get();
         return $query->getResultArray();

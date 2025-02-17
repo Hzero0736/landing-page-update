@@ -250,9 +250,13 @@
             editable: userRole === 'secretary',
             selectable: userRole === 'secretary',
             events: <?= json_encode($meetings) ?>.filter(function(event) {
-                // Tampilkan semua event untuk admin/petugas
-                if (userRole === 'superadmin' || userRole === 'amin') {
+                // Tampilkan semua event untuk superadmin
+                if (userRole === 'superadmin') {
                     return true;
+                }
+                // Untuk admin, tampilkan event yang sudah approved dan miliknya sendiri
+                if (userRole === 'admin') {
+                    return event.status === 'approved' || event.user_id === userId;
                 }
                 // Untuk user biasa, hanya tampilkan event miliknya
                 return event.user_id === userId;
@@ -318,14 +322,28 @@
             },
             eventClick: function(info) {
                 $('#detailModal').modal('show');
-                // Sembunyikan tombol edit & hapus jika status approved/rejected
-                if (info.event.extendedProps.status === 'approved' || info.event.extendedProps.status === 'rejected') {
+
+                // Logika tampilkan/sembunyikan tombol edit & hapus
+                if (info.event.extendedProps.user_id === userId) {
+                    // Semua user bisa edit & hapus meeting miliknya sendiri jika status pending
+                    if (info.event.extendedProps.status === 'pending') {
+                        $('.modal-footer .btn-warning').show();
+                        $('.modal-footer .btn-danger').show();
+                    } else if (userRole === 'superadmin') {
+                        // Superadmin bisa edit & hapus meeting approved/rejected miliknya
+                        $('.modal-footer .btn-warning').show();
+                        $('.modal-footer .btn-danger').show();
+                    } else {
+                        $('.modal-footer .btn-warning').hide();
+                        $('.modal-footer .btn-danger').hide();
+                    }
+                } else {
+                    // Meeting milik user lain: semua tombol disembunyikan
                     $('.modal-footer .btn-warning').hide();
                     $('.modal-footer .btn-danger').hide();
-                } else {
-                    $('.modal-footer .btn-warning').show();
-                    $('.modal-footer .btn-danger').show();
                 }
+
+                // Tampilkan section alasan penolakan jika status rejected
                 if (info.event.extendedProps.status === 'rejected') {
                     $('#rejection_section').show();
                     $('#detail_reason').text(info.event.extendedProps.reason || 'Tidak ada alasan yang dicantumkan');
@@ -372,6 +390,8 @@
                 $('#edit_room').val(info.event.extendedProps.room_id);
                 $('#edit_description').val(info.event.extendedProps.description || '');
                 $('#edit_nama_penyelenggara').val(info.event.extendedProps.nama_penyelenggara);
+                $('#detail_user_name').text(info.event.extendedProps.user_name);
+                $('#detail_user_nik').text(info.event.extendedProps.nik);
             }
         });
 

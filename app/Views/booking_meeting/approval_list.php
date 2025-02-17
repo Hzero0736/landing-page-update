@@ -17,7 +17,12 @@
             <!-- Tabs -->
             <ul class="nav nav-tabs mb-3" id="approvalTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">
+                        <i class="fas fa-list me-2"></i>Semua Data
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
                         <i class="fas fa-clock me-2"></i>Menunggu
                         <span class="badge bg-warning ms-2"><?= count(array_filter($meetings, fn($m) => $m['status'] === 'pending')) ?></span>
                     </button>
@@ -38,8 +43,60 @@
 
             <!-- Tab Content -->
             <div class="tab-content" id="approvalTabContent">
+                <!-- All Data Tab -->
+                <div class="tab-pane fade show active" id="all" role="tabpanel">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="allTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Judul</th>
+                                    <th>Tanggal</th>
+                                    <th>Waktu</th>
+                                    <th>Ruangan</th>
+                                    <th>Penyelenggara</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($meetings as $key => $meeting): ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= $meeting['title'] ?></td>
+                                        <td><?= date('d/m/Y', strtotime($meeting['date'])) ?></td>
+                                        <td><?= date('H:i', strtotime($meeting['start_time'])) ?> - <?= date('H:i', strtotime($meeting['end_time'])) ?></td>
+                                        <td><?= $meeting['room_name'] ?></td>
+                                        <td><?= $meeting['nama_penyelenggara'] ?></td>
+                                        <td>
+                                            <?php
+                                            $badgeClass = match ($meeting['status']) {
+                                                'pending' => 'bg-warning',
+                                                'approved' => 'bg-success',
+                                                'rejected' => 'bg-danger',
+                                            };
+                                            $statusText = match ($meeting['status']) {
+                                                'pending' => 'Menunggu',
+                                                'approved' => 'Disetujui',
+                                                'rejected' => 'Ditolak',
+                                            };
+                                            ?>
+                                            <span class="badge <?= $badgeClass ?>"><?= $statusText ?></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info" onclick="showDetail(<?= htmlspecialchars(json_encode($meeting)) ?>)">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Pending Tab -->
-                <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                <div class="tab-pane fade" id="pending" role="tabpanel">
                     <div class="table-responsive">
                         <table class="table table-hover" id="pendingTable">
                             <thead>
@@ -173,6 +230,20 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Tambahkan ini di bagian script -->
+            <script>
+                $(document).ready(function() {
+                    // Initialize DataTables termasuk table all
+                    ['all', 'pending', 'approved', 'rejected'].forEach(status => {
+                        $(`#${status}Table`).DataTable({
+                            language: {
+                                url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json"
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>
