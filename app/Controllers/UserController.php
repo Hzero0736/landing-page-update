@@ -57,20 +57,34 @@ class UserController extends BaseController
     public function edit($id)
     {
         $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nik'      => 'required|numeric',
-            'password' => 'required|min_length[8]',
-            'name'     => 'required|min_length[3]',
-            'role'     => 'required'
-        ]);
+
+        // Ambil data password dari form
+        $password = $this->request->getPost('password');
+
+        // Set rules validasi
+        $rules = [
+            'nik'  => 'required|numeric',
+            'name' => 'required|min_length[3]',
+            'role' => 'required'
+        ];
+
+        // Tambahkan validasi password hanya jika diisi
+        if (!empty($password)) {
+            $rules['password'] = 'min_length[8]';
+        }
+
+        $validation->setRules($rules);
 
         if (!$validation->withRequest($this->request)->run()) {
             return redirect()->to('booking')->with('error', $validation->getErrors());
         }
 
+        // Ambil data user yang akan diedit
+        $user = $this->userModel->find($id);
+
         $data = [
             'nik'      => $this->request->getPost('nik'),
-            'password' => $this->request->getPost('password'),
+            'password' => empty($password) ? $user['password'] : $password,
             'name'     => $this->request->getPost('name'),
             'role'     => $this->request->getPost('role'),
         ];

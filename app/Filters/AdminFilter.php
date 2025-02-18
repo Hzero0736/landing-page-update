@@ -17,7 +17,7 @@ class AdminFilter implements FilterInterface
 
         $role = $session->get('role');
         if ($role != 'superadmin') {
-            return redirect()->to('/');
+            return redirect()->to('/booking');
         }
     }
 
