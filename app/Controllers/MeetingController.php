@@ -176,6 +176,7 @@ class MeetingController extends BaseController
         return redirect()->to('booking')->with('success', 'Booking ruang rapat berhasil dihapus');
     }
 
+
     public function edit($id)
     {
         $meeting = $this->meetingModel->find($id);
@@ -240,6 +241,33 @@ class MeetingController extends BaseController
         echo view('booking_meeting/approval_list', $data);
         echo view('layout/footer');
     }
+    public function deleteSelected()
+    {
+        $selectedIds = $this->request->getPost('selected_ids');
+
+        if (!empty($selectedIds)) {
+            // Validasi status meeting sebelum delete
+            $meetings = $this->meetingModel->whereIn('id', $selectedIds)->findAll();
+            $canDelete = true;
+
+            foreach ($meetings as $meeting) {
+                if ($meeting['status'] === 'approved') {
+                    $canDelete = false;
+                    break;
+                }
+            }
+
+            if ($canDelete) {
+                $this->meetingModel->whereIn('id', $selectedIds)->delete();
+                return redirect()->back()->with('success', 'Data meeting berhasil dihapus');
+            } else {
+                return redirect()->back()->with('error', 'Tidak dapat menghapus meeting yang sudah disetujui');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Pilih minimal satu data untuk dihapus');
+    }
+
 
     public function approve($id)
     {

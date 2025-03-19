@@ -13,5 +13,7 @@
     <script src="assets/js/fullcalendar.min.js"></script>
     <script src="assets/js/index.global.min.js"></script>
     <script src="assets/js/moment.min.js"></script>
+    <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.min.css">
 
 </head>

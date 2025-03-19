@@ -23,7 +23,9 @@ $routes->group('', ['filter' => 'admin'], static function ($routes) {
     $routes->get('/approval', 'MeetingController::listApproval');
     $routes->get('booking/approve/(:num)', 'MeetingController::approve/$1');
     $routes->post('booking/reject/(:num)', 'MeetingController::reject/$1');
+    $routes->post('/booking/delete-selected', 'MeetingController::deleteSelected');
 });
+
 // Routes for meeting management
 $routes->group('', ['filter' => 'adminpetugas'], static function ($routes) {
     $routes->get('/booking', 'MeetingController::index', ['filter' => 'auth']);

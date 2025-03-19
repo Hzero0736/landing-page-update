@@ -74,4 +74,9 @@ class MeetingModel extends Model
             ->join('meeting_rooms', 'meetings.room_id = meeting_rooms.id')
             ->findAll();
     }
+
+    public function getAllMeetingIds()
+    {
+        return $this->select('id')->findAll();
+    }
 }
